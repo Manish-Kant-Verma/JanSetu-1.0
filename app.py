@@ -222,29 +222,94 @@ def dashboard():
     if not u:
         return redirect(url_for("login"))
 
+    # Volunteers have their own dashboard
     if u["role"] == "volunteer":
         return redirect(url_for("volunteer_dashboard"))
 
     c = db()
 
-    rows = c.execute("""
-        SELECT *
-        FROM problems
-        WHERE reporter_id=?
-        OR locality=?
-        ORDER BY id DESC
-    """, (
-        u["id"],
-        u["locality"]
-    )).fetchall()
+    # Citizen cases
+    if u["role"] == "citizen":
+
+        problems = c.execute(
+            """
+            SELECT *
+            FROM problems
+            WHERE reporter_id=?
+               OR locality=?
+            ORDER BY id DESC
+            """,
+            (
+                u["id"],
+                u["locality"]
+            )
+        ).fetchall()
+
+        c.close()
+
+        return render_template(
+            "dashboard.html",
+            user=u,
+            problems=problems,
+            volunteers=[]
+        )
+
+
+    # Admin sees all cases
+    if u["role"] == "admin":
+
+        problems = c.execute(
+            """
+            SELECT *
+            FROM problems
+            ORDER BY id DESC
+            """
+        ).fetchall()
+
+        volunteers = c.execute(
+            """
+            SELECT *
+            FROM users
+            WHERE role='volunteer'
+            ORDER BY name
+            """
+        ).fetchall()
+
+        c.close()
+
+        return render_template(
+            "dashboard.html",
+            user=u,
+            problems=problems,
+            volunteers=volunteers
+        )
+
+
+    # Department
+    if u["role"] == "department":
+
+        problems = c.execute(
+            """
+            SELECT *
+            FROM problems
+            WHERE authority=?
+            ORDER BY id DESC
+            """,
+            (u["name"],)
+        ).fetchall()
+
+        c.close()
+
+        return render_template(
+            "dashboard.html",
+            user=u,
+            problems=problems,
+            volunteers=[]
+        )
 
     c.close()
 
-    return render_template(
-        "dashboard.html",
-        user=u,
-        problems=rows
-    )
+    return redirect(url_for("login"))
 
 @app.route("/volunteer")
 def volunteer_dashboard():
