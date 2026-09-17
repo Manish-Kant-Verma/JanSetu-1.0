@@ -122,3 +122,69 @@ JanSetu provides a complete workflow for reporting, verifying, and resolving civ
 - Complaint resolution
 - Citizen notification
 - Complaint history and audit trail
+
+## User Roles
+
+### Citizen
+
+The citizen is the primary source of civic problem reports.
+
+Responsibilities:
+
+- Capture problem image
+- Submit complaint
+- Provide optional voice/text information
+- Track complaint
+- Provide feedback
+
+### HOD / Principal
+
+The HOD/Principal manages student participation within the institution.
+
+Responsibilities:
+
+- Review assigned complaints
+- Select appropriate department
+- Decide required number of students
+- Assign student team
+- Assign faculty supervisor
+- Monitor investigation
+- Review technical reports
+
+### Faculty Supervisor
+
+The faculty supervisor guides students during technical investigation.
+
+Responsibilities:
+
+- Guide student teams
+- Review field observations
+- Verify technical reports
+- Provide academic supervision
+
+### Students
+
+Students perform field-level technical verification.
+
+Responsibilities:
+
+- Visit complaint location
+- Inspect the problem
+- Capture evidence
+- Record technical observations
+- Prepare technical report
+- Submit report through the platform
+
+### Government Authority
+
+Government officials are responsible for taking action on reported problems.
+
+Responsibilities:
+
+- Receive complaints
+- Review citizen reports
+- Review technical reports
+- Take appropriate action
+- Update progress
+- Upload completion evidence
+- Resolve or reopen complaints
