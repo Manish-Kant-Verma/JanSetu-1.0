@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}
+Field Report — JanSetu
+{% endblock %}
+
+{% block content %}
+
+<div class="form-wrap wide">
+
+    <p class="eyebrow">
+        VOLUNTEER FIELD REPORT
+    </p>
+
+    <h1>
+        {{ assignment.title }}
+    </h1>
+
+    <div class="card">
+
+        <p>
+            <b>Case ID:</b>
+            {{ assignment.case_id }}
+        </p>
+
+        <p>
+            <b>Category:</b>
+            {{ assignment.category }}
+        </p>
+
+        <p>
+            <b>Locality:</b>
+            {{ assignment.locality }}
+        </p>
+
+        <p>
+            <b>Address:</b>
+            {{ assignment.address or "Not provided" }}
+        </p>
+
+        <p>
+            <b>Authority:</b>
+            {{ assignment.authority }}
+        </p>
+
+        {% if assignment.instructions %}
+
+        <div class="alert">
+
+            <b>Admin Instructions</b>
+
+            <p>
+                {{ assignment.instructions }}
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <form
+        method="post"
+        enctype="multipart/form-data"
+        class="form card"
+    >
+
+        <label>
+            Field Findings
+
+            <textarea
+                name="findings"
+                rows="7"
+                required
+                placeholder="Describe what you observed at the location..."
+            ></textarea>
+
+        </label>
+
+
+        <label>
+            Recommendation
+
+            <textarea
+                name="recommendation"
+                rows="5"
+                placeholder="What action should be taken?"
+            ></textarea>
+
+        </label>
+
+
+        <label>
+            Field Evidence Photo
+
+            <input
+                type="file"
+                name="evidence"
+                accept="image/png,image/jpeg,image/webp"
+            >
+
+        </label>
+
+
+        <button class="btn">
+            Submit Field Report
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}
