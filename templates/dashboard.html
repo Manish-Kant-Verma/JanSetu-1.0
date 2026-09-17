@@ -4,7 +4,89 @@
 {% block title %}Dashboard — JanSetu{% endblock %}
 
 {% block content %}
+{% if user.role == 'admin' %}
 
+<section class="card" style="margin-bottom:30px;">
+
+    <p class="eyebrow">ADMIN WORK MANAGEMENT</p>
+
+    <h2>Assign Work to Volunteer</h2>
+
+    <p class="muted">
+        Assign a civic case to a student volunteer for field verification.
+    </p>
+
+    <form
+        method="post"
+        action="{{ url_for('assign_volunteer') }}"
+        class="form"
+    >
+
+        <label>
+            Select Case
+
+            <select name="problem_id" required>
+
+                <option value="">
+                    -- Select a case --
+                </option>
+
+                {% for p in problems %}
+
+                <option value="{{ p.id }}">
+                    {{ p.case_id }} — {{ p.title }} — {{ p.locality }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+        </label>
+
+
+        <label>
+            Select Volunteer
+
+            <select name="volunteer_id" required>
+
+                <option value="">
+                    -- Select volunteer --
+                </option>
+
+                {% for v in volunteers %}
+
+                <option value="{{ v.id }}">
+                    {{ v.name }} — {{ v.locality }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+        </label>
+
+
+        <label>
+            Instructions for Volunteer
+
+            <textarea
+                name="instructions"
+                rows="5"
+                placeholder="Example: Visit the reported location, verify the condition of the road and upload photographs."
+            ></textarea>
+
+        </label>
+
+
+        <button type="submit" class="btn">
+            Assign Work
+        </button>
+
+    </form>
+
+</section>
+
+{% endif %}
 <section class="page-head">
 
     <div>
