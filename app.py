@@ -64,6 +64,31 @@ def init_db():
       note TEXT, actor TEXT NOT NULL, created_at TEXT NOT NULL,
       FOREIGN KEY(problem_id) REFERENCES problems(id)
     );
+    CREATE TABLE IF NOT EXISTS volunteer_assignments(
+     id INTEGER PRIMARY KEY AUTOINCREMENT,
+     problem_id INTEGER NOT NULL,
+     volunteer_id INTEGER NOT NULL,
+     assigned_by INTEGER,
+     instructions TEXT,
+     status TEXT DEFAULT 'assigned',
+     assigned_at TEXT NOT NULL,
+     completed_at TEXT,
+     FOREIGN KEY(problem_id) REFERENCES problems(id),
+     FOREIGN KEY(volunteer_id) REFERENCES users(id),
+     FOREIGN KEY(assigned_by) REFERENCES users(id)
+    );
+
+    CREATE TABLE IF NOT EXISTS volunteer_reports(
+     id INTEGER PRIMARY KEY AUTOINCREMENT,
+     assignment_id INTEGER NOT NULL,
+     volunteer_id INTEGER NOT NULL,
+     findings TEXT NOT NULL,
+     recommendation TEXT,
+     evidence_path TEXT,
+     submitted_at TEXT NOT NULL,
+     FOREIGN KEY(assignment_id) REFERENCES volunteer_assignments(id),
+     FOREIGN KEY(volunteer_id) REFERENCES users(id)
+  );
     """)
     # Lightweight migration for databases created before role/password login was added.
     cols = {row["name"] for row in c.execute("PRAGMA table_info(users)").fetchall()}
