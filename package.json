@@ -1,0 +1,17 @@
+{
+  "name": "jansetu",
+  "version": "1.0.0",
+  "private": true,
+  "description": "JanSetu — From Citizen Report to Government Action",
+  "scripts": {
+    "setup": "npm install && cd server && npm install && cd .. && cd client && npm install",
+    "dev": "concurrently -n SERVER,CLIENT -c blue,green \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "server": "npm run dev --prefix server",
+    "client": "npm run dev --prefix client",
+    "build": "npm run build --prefix client",
+    "reset-db": "node server/scripts/reset.mjs"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
+}
