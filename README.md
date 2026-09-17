@@ -365,3 +365,21 @@ JanSetu/
 │
 ├── README.md
 └── LICENSE
+
+
+## Future Scope
+
+JanSetu can be expanded with additional capabilities such as:
+
+- Multilingual support for more Indian languages
+- Advanced image-based damage assessment
+- GIS-based civic issue mapping
+- Public problem heatmaps
+- Department performance analytics
+- Automated reminders for pending complaints
+- Escalation of unresolved complaints
+- Integration with existing government grievance systems
+- Mobile applications for field officials
+- Offline reporting for low-connectivity areas
+- Citizen reward and awareness mechanisms
+- Historical civic problem analytics
