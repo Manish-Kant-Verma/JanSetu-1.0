@@ -232,3 +232,57 @@ The platform can be developed using a modern web and mobile technology stack.
 - Local-language processing
 - Duplicate complaint detection
 - Problem categorization
+
+ ## AI and Smart Features
+
+JanSetu can use AI to reduce manual work and improve complaint management.
+
+### 1. Automatic Problem Classification
+
+The system can analyze the submitted image and optional description to suggest the type of civic problem.
+
+Examples:
+
+- Road damage
+- Drainage blockage
+- Garbage accumulation
+- Water leakage
+- Broken streetlight
+- Infrastructure damage
+
+### 2. Automatic Department Recommendation
+
+Based on the problem category and location, the system can suggest the relevant government department.
+
+### 3. Local-Language Voice Processing
+
+Citizens can describe their problem using voice.
+
+Example:
+
+Voice → Speech-to-Text → Language Processing → Structured Complaint
+
+This can make the platform more accessible to users who prefer speaking rather than typing.
+
+### 4. Duplicate Complaint Detection
+
+Multiple citizens may report the same problem.
+
+The system can compare:
+
+- Location
+- Images
+- Time
+- Problem category
+
+and identify potentially duplicate complaints.
+
+### 5. Priority Recommendation
+
+The system can assist authorities in identifying potentially high-priority complaints based on factors such as:
+
+- Safety risk
+- Location
+- Number of reports
+- Public impact
+- Problem severity
