@@ -622,6 +622,97 @@ def volunteer_report(assignment_id):
         assignment=assignment
     )
 
+@app.route("/admin/assign-volunteer", methods=["POST"])
+def assign_volunteer():
+
+    u = current_user()
+
+    # Must be logged in
+    if not u:
+        return redirect(url_for("login"))
+
+    # Only admin can assign work
+    if u["role"] != "admin":
+        flash("Only administrators can assign work.", "error")
+        return redirect(url_for("dashboard"))
+
+    problem_id = request.form.get("problem_id")
+    volunteer_id = request.form.get("volunteer_id")
+    instructions = request.form.get("instructions", "").strip()
+
+    # Validate input
+    if not problem_id or not volunteer_id:
+        flash("Please select a case and a volunteer.", "error")
+        return redirect(url_for("dashboard"))
+
+    c = db()
+
+    # Check that selected problem exists
+    problem = c.execute(
+        "SELECT * FROM problems WHERE id=?",
+        (problem_id,)
+    ).fetchone()
+
+    # Check that selected user is actually a volunteer
+    volunteer = c.execute(
+        """
+        SELECT * FROM users
+        WHERE id=? AND role='volunteer'
+        """,
+        (volunteer_id,)
+    ).fetchone()
+
+    if not problem:
+        c.close()
+        flash("Selected case does not exist.", "error")
+        return redirect(url_for("dashboard"))
+
+    if not volunteer:
+        c.close()
+        flash("Selected user is not a valid volunteer.", "error")
+        return redirect(url_for("dashboard"))
+
+    # Create assignment
+    c.execute(
+        """
+        INSERT INTO volunteer_assignments(
+            problem_id,
+            volunteer_id,
+            assigned_by,
+            instructions,
+            status,
+            assigned_at
+        )
+        VALUES (?, ?, ?, ?, 'assigned', ?)
+        """,
+        (
+            problem_id,
+            volunteer_id,
+            u["id"],
+            instructions,
+            now()
+        )
+    )
+
+    # Add event to case timeline
+    add_timeline(
+        c,
+        problem_id,
+        "volunteer_assigned",
+        "Case assigned to volunteer: " + volunteer["name"],
+        "Admin"
+    )
+
+    c.commit()
+    c.close()
+
+    flash(
+        "Work successfully assigned to " + volunteer["name"] + ".",
+        "success"
+    )
+
+    return redirect(url_for("dashboard"))
+
 if __name__=="__main__":
     init_db()
     app.run(host="0.0.0.0",port=int(os.environ.get("PORT",5000)),debug=True)
