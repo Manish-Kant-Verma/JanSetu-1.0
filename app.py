@@ -30,6 +30,19 @@ def init_db():
       gov_id_last4 TEXT, password_hash TEXT, verified INTEGER DEFAULT 0,
       role TEXT DEFAULT 'citizen', created_at TEXT NOT NULL
     );
+    CREATE TABLE IF NOT EXISTS volunteer_assignments(
+     id INTEGER PRIMARY KEY AUTOINCREMENT,
+     problem_id INTEGER NOT NULL,
+     volunteer_id INTEGER NOT NULL,
+     assigned_by INTEGER NOT NULL,
+     instructions TEXT,
+     status TEXT DEFAULT 'assigned',
+     assigned_at TEXT NOT NULL,
+     completed_at TEXT,
+     FOREIGN KEY(problem_id) REFERENCES problems(id),
+     FOREIGN KEY(volunteer_id) REFERENCES users(id),
+     FOREIGN KEY(assigned_by) REFERENCES users(id)
+   );
     CREATE TABLE IF NOT EXISTS problems(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       case_id TEXT UNIQUE NOT NULL, title TEXT NOT NULL,
