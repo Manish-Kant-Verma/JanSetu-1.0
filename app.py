@@ -3,6 +3,7 @@ import os, sqlite3, uuid, re
 from datetime import datetime, timedelta
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 DB = os.path.join(BASE, "jansetu.db")
@@ -26,7 +27,7 @@ def init_db():
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL, phone TEXT UNIQUE NOT NULL,
       locality TEXT NOT NULL, district TEXT, state TEXT,
-      gov_id_last4 TEXT, verified INTEGER DEFAULT 0,
+      gov_id_last4 TEXT, password_hash TEXT, verified INTEGER DEFAULT 0,
       role TEXT DEFAULT 'citizen', created_at TEXT NOT NULL
     );
     CREATE TABLE IF NOT EXISTS problems(
@@ -64,6 +65,26 @@ def init_db():
       FOREIGN KEY(problem_id) REFERENCES problems(id)
     );
     """)
+    # Lightweight migration for databases created before role/password login was added.
+    cols = {row["name"] for row in c.execute("PRAGMA table_info(users)").fetchall()}
+    if "password_hash" not in cols:
+        c.execute("ALTER TABLE users ADD COLUMN password_hash TEXT")
+
+    # Demo accounts for prototype presentation/testing.
+    demo_users = [
+        ("JanSetu Admin", "admin", "JanSetu HQ", "", "Bihar", "ADMIN-DEMO", "admin123", "admin"),
+        ("Municipal Department", "department", "Patna Municipal Area", "Patna", "Bihar", "DEPT-DEMO", "dept123", "department"),
+        ("JanSetu Volunteer", "volunteer", "Patna Municipal Area", "Patna", "Bihar", "VOL-DEMO", "vol123", "volunteer"),
+    ]
+    for name, phone, locality, district, state, gov_ref, password, role in demo_users:
+        exists = c.execute("SELECT id FROM users WHERE phone=?", (phone,)).fetchone()
+        if not exists:
+            c.execute(
+                """INSERT INTO users(name,phone,locality,district,state,gov_id_last4,password_hash,verified,role,created_at)
+                   VALUES(?,?,?,?,?,?,?,?,?,?)""",
+                (name, phone, locality, district, state, gov_ref,
+                 generate_password_hash(password), 1, role, now())
+            )
     c.commit(); c.close()
 
 def now(): return datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
@@ -128,12 +149,27 @@ def register():
 
 @app.route("/login", methods=["GET","POST"])
 def login():
-    if request.method=="POST":
-        phone=request.form["phone"].strip()
-        c=db(); u=c.execute("SELECT * FROM users WHERE phone=?", (phone,)).fetchone(); c.close()
-        if u:
-            session["user_id"]=u["id"]; return redirect(url_for("dashboard"))
-        flash("No account found. Register first.", "error")
+    if request.method == "POST":
+        role = request.form.get("role", "citizen").strip().lower()
+        identifier = request.form.get("identifier", "").strip()
+        password = request.form.get("password", "")
+
+        c = db()
+        if role == "citizen":
+            u = c.execute("SELECT * FROM users WHERE phone=? AND role='citizen'", (identifier,)).fetchone()
+            c.close()
+            if u:
+                session["user_id"] = u["id"]
+                return redirect(url_for("dashboard"))
+            flash("Citizen account not found. Register first.", "error")
+        else:
+            u = c.execute("SELECT * FROM users WHERE phone=? AND role=?", (identifier, role)).fetchone()
+            c.close()
+            if u and u["password_hash"] and check_password_hash(u["password_hash"], password):
+                session["user_id"] = u["id"]
+                return redirect(url_for("dashboard"))
+            flash("Invalid demo ID or password.", "error")
+
     return render_template("login.html")
 
 @app.route("/logout")
@@ -150,8 +186,15 @@ def dashboard():
 
 @app.route("/report", methods=["GET","POST"])
 def report():
-    u=current_user()
-    if not u: return redirect(url_for("login"))
+    u = current_user()
+
+    if not u:
+        return redirect(url_for("login"))
+
+    # Only citizens are allowed to create new problems
+    if u["role"] != "citizen":
+        flash("Only verified citizens can report a new problem.", "error")
+        return redirect(url_for("dashboard"))
     if request.method=="POST":
         title=request.form["title"].strip(); category=request.form["category"]
         desc=request.form["description"].strip(); locality=request.form["locality"].strip() or u["locality"]
