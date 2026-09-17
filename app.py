@@ -467,68 +467,6 @@ def api_problems():
 def uploads(name):
     from flask import send_from_directory
     return send_from_directory(UPLOAD_DIR,name)
-@app.route("/admin/assign-volunteer", methods=["POST"])
-def assign_volunteer():
-
-    u = current_user()
-
-    if not u:
-        return redirect(url_for("login"))
-
-    if u["role"] != "admin":
-        flash("Only administrators can assign volunteers.", "error")
-        return redirect(url_for("dashboard"))
-
-    problem_id = request.form.get("problem_id")
-    volunteer_id = request.form.get("volunteer_id")
-    instructions = request.form.get("instructions", "").strip()
-
-    if not problem_id or not volunteer_id:
-        flash("Select a case and a volunteer.", "error")
-        return redirect(url_for("dashboard"))
-
-    c = db()
-
-    volunteer = c.execute("""
-        SELECT id FROM users
-        WHERE id=? AND role='volunteer'
-    """, (volunteer_id,)).fetchone()
-
-    problem = c.execute("""
-        SELECT id FROM problems
-        WHERE id=?
-    """, (problem_id,)).fetchone()
-
-    if not volunteer or not problem:
-        c.close()
-        flash("Invalid case or volunteer.", "error")
-        return redirect(url_for("dashboard"))
-
-    c.execute("""
-        INSERT INTO volunteer_assignments(
-            problem_id,
-            volunteer_id,
-            assigned_by,
-            instructions,
-            status,
-            assigned_at
-        )
-        VALUES(?,?,?,?,?,?)
-    """, (
-        problem_id,
-        volunteer_id,
-        u["id"],
-        instructions,
-        "assigned",
-        now()
-    ))
-
-    c.commit()
-    c.close()
-
-    flash("Case assigned to volunteer successfully.", "success")
-
-    return redirect(url_for("dashboard"))
 
 @app.route("/volunteer/report/<int:assignment_id>", methods=["GET", "POST"])
 def volunteer_report(assignment_id):
