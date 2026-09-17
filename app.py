@@ -203,11 +203,36 @@ def logout():
 
 @app.route("/dashboard")
 def dashboard():
-    u=current_user()
-    if not u: return redirect(url_for("login"))
-    c=db(); rows=c.execute("""SELECT * FROM problems WHERE reporter_id=? OR locality=?
-                              ORDER BY id DESC""",(u["id"],u["locality"])).fetchall()
-    c.close(); return render_template("dashboard.html", user=u, problems=rows)
+
+    u = current_user()
+
+    if not u:
+        return redirect(url_for("login"))
+
+    if u["role"] == "volunteer":
+        return redirect(url_for("volunteer_dashboard"))
+
+    c = db()
+
+    rows = c.execute("""
+        SELECT *
+        FROM problems
+        WHERE reporter_id=?
+        OR locality=?
+        ORDER BY id DESC
+    """, (
+        u["id"],
+        u["locality"]
+    )).fetchall()
+
+    c.close()
+
+    return render_template(
+        "dashboard.html",
+        user=u,
+        problems=rows
+    )
+
 @app.route("/volunteer")
 def volunteer_dashboard():
     u = current_user()
