@@ -383,3 +383,36 @@ JanSetu can be expanded with additional capabilities such as:
 - Offline reporting for low-connectivity areas
 - Citizen reward and awareness mechanisms
 - Historical civic problem analytics
+
+## Project Goals
+
+JanSetu aims to:
+
+- Make civic problem reporting simple
+- Improve accessibility through local-language interaction
+- Provide accurate location-based complaints
+- Introduce technical field verification
+- Give students practical field experience
+- Improve coordination between institutions and government
+- Provide transparent complaint tracking
+- Create a documented path from complaint to resolution
+
+## Contributing
+
+Contributions are welcome.
+
+1. Fork the repository.
+2. Create a new branch.
+3. Make your changes.
+4. Test the changes.
+5. Commit your changes.
+6. Push the branch.
+7. Create a Pull Request.
+
+Example:
+
+```bash
+git checkout -b feature/new-feature
+git add .
+git commit -m "feat: add new feature"
+git push origin feature/new-feature
