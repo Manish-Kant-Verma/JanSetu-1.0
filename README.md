@@ -64,7 +64,7 @@ JanSetu provides a complete workflow for reporting, verifying, and resolving civ
 2. Citizen optionally adds text or voice in a local language.
 3. Application captures accurate geographical location.
 4. A unique complaint reference number is generated.
-5. Complaint information is sent to the relevant government authority and technical institution.
+5. Complaint information is sent to the relevant government authority and technical  institution.
 6. HOD/Principal reviews the complaint.
 7. HOD/Principal selects the appropriate department.
 8. HOD/Principal decides the number of students required.
@@ -81,3 +81,44 @@ JanSetu provides a complete workflow for reporting, verifying, and resolving civ
 ### Complaint Lifecycle
 
 `Reported → Assigned → Field Verification → Report Submitted → Government Action → Resolved`
+
+
+## Features
+
+### Citizen Features
+
+- Photo-based problem reporting
+- One-tap submission
+- Automatic location capture
+- Optional text description
+- Optional voice description
+- Local-language support
+- Unique complaint reference number
+- Complaint tracking
+- Status notifications
+- Resolution feedback
+
+### College Features
+
+- Institution dashboard
+- Complaint monitoring
+- Department-wise complaint management
+- HOD/Principal control
+- Student assignment
+- Number of students decided by HOD/Principal
+- Faculty supervisor assignment
+- Field investigation management
+- Technical report submission
+- Report monitoring
+
+### Government Features
+
+- Government dashboard
+- Complaint management
+- Department-wise routing
+- Technical report access
+- Action status updates
+- Evidence upload
+- Complaint resolution
+- Citizen notification
+- Complaint history and audit trail
