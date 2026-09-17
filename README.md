@@ -333,3 +333,36 @@ The system can assist authorities in identifying potentially high-priority compl
              |
              v
           Citizen
+
+
+
+## Project Structure
+
+```text
+JanSetu/
+│
+├── frontend/
+│   ├── citizen-app/
+│   └── web-dashboard/
+│
+├── backend/
+│   ├── api/
+│   ├── models/
+│   ├── services/
+│   └── database/
+│
+├── ai/
+│   ├── classification/
+│   ├── speech-processing/
+│   └── duplicate-detection/
+│
+├── docs/
+│   ├── architecture/
+│   ├── reports/
+│   └── presentations/
+│
+├── tests/
+│
+├── README.md
+└── LICENSE
+
