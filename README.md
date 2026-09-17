@@ -53,3 +53,31 @@ Government authorities may also need field-level information before taking actio
 At the same time, technical educational institutions have students who can participate in real-world field investigations under institutional supervision.
 
 JanSetu brings these stakeholders together through a single digital platform.
+
+## Proposed Solution
+
+JanSetu provides a complete workflow for reporting, verifying, and resolving civic problems.
+
+### Workflow
+
+1. Citizen captures an image of a civic problem.
+2. Citizen optionally adds text or voice in a local language.
+3. Application captures accurate geographical location.
+4. A unique complaint reference number is generated.
+5. Complaint information is sent to the relevant government authority and technical institution.
+6. HOD/Principal reviews the complaint.
+7. HOD/Principal selects the appropriate department.
+8. HOD/Principal decides the number of students required.
+9. HOD/Principal assigns a student team and faculty supervisor.
+10. Students visit the reported location.
+11. Students verify the problem and collect technical evidence.
+12. Students prepare and submit a technical report.
+13. The report is shared with the government authority.
+14. Government officials review the report and take appropriate action.
+15. Complaint status is updated in the system.
+16. Citizen receives updates and can track the complaint.
+17. After resolution, the citizen can provide feedback.
+
+### Complaint Lifecycle
+
+`Reported → Assigned → Field Verification → Report Submitted → Government Action → Resolved`
