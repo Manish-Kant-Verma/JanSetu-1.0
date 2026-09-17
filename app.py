@@ -208,6 +208,44 @@ def dashboard():
     c=db(); rows=c.execute("""SELECT * FROM problems WHERE reporter_id=? OR locality=?
                               ORDER BY id DESC""",(u["id"],u["locality"])).fetchall()
     c.close(); return render_template("dashboard.html", user=u, problems=rows)
+@app.route("/volunteer")
+def volunteer_dashboard():
+    u = current_user()
+
+    if not u:
+        return redirect(url_for("login"))
+
+    if u["role"] != "volunteer":
+        flash("Volunteer access only.", "error")
+        return redirect(url_for("dashboard"))
+
+    c = db()
+
+    assignments = c.execute("""
+        SELECT
+            va.*,
+            p.case_id,
+            p.title,
+            p.category,
+            p.description,
+            p.locality,
+            p.address,
+            p.authority,
+            p.status AS problem_status,
+            p.deadline
+        FROM volunteer_assignments va
+        JOIN problems p ON p.id = va.problem_id
+        WHERE va.volunteer_id = ?
+        ORDER BY va.id DESC
+    """, (u["id"],)).fetchall()
+
+    c.close()
+
+    return render_template(
+        "volunteer.html",
+        user=u,
+        assignments=assignments
+    )
 
 @app.route("/report", methods=["GET","POST"])
 def report():
