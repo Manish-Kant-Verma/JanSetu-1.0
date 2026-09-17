@@ -36,3 +36,20 @@ The government authority can then use the verified technical report to take appr
 - Faculty Supervisors
 - Student Teams
 - Government Authorities
+
+## Problem Statement
+
+Many local civic problems such as damaged roads, blocked drainage systems, broken streetlights, water leakage, waste accumulation, and damaged public infrastructure remain difficult to report, verify, and track effectively.
+
+Citizens may know that a problem exists but may not know:
+
+- Which government department is responsible
+- How to formally report the issue
+- What technical information is required
+- How to track the progress of the complaint
+
+Government authorities may also need field-level information before taking action.
+
+At the same time, technical educational institutions have students who can participate in real-world field investigations under institutional supervision.
+
+JanSetu brings these stakeholders together through a single digital platform.
