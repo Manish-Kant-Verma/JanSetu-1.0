@@ -426,6 +426,164 @@ def assign_volunteer():
     flash("Case assigned to volunteer successfully.", "success")
 
     return redirect(url_for("dashboard"))
+
+@app.route("/volunteer/report/<int:assignment_id>", methods=["GET", "POST"])
+def volunteer_report(assignment_id):
+
+    u = current_user()
+
+    if not u:
+        return redirect(url_for("login"))
+
+    if u["role"] != "volunteer":
+        flash("Volunteer access only.", "error")
+        return redirect(url_for("dashboard"))
+
+    c = db()
+
+    assignment = c.execute("""
+        SELECT
+            va.*,
+            p.case_id,
+            p.title,
+            p.category,
+            p.description,
+            p.locality,
+            p.address,
+            p.authority,
+            p.status AS problem_status,
+            p.deadline
+        FROM volunteer_assignments va
+        JOIN problems p ON p.id = va.problem_id
+        WHERE va.id=?
+        AND va.volunteer_id=?
+    """, (
+        assignment_id,
+        u["id"]
+    )).fetchone()
+
+    if not assignment:
+        c.close()
+        flash("Assignment not found.", "error")
+        return redirect(url_for("volunteer_dashboard"))
+
+    if request.method == "POST":
+
+        findings = request.form.get("findings", "").strip()
+        recommendation = request.form.get(
+            "recommendation",
+            ""
+        ).strip()
+
+        if not findings:
+            c.close()
+            flash("Field findings are required.", "error")
+            return redirect(
+                url_for(
+                    "volunteer_report",
+                    assignment_id=assignment_id
+                )
+            )
+
+        evidence_path = None
+
+        f = request.files.get("evidence")
+
+        if f and f.filename:
+
+            extension = f.filename.rsplit(
+                ".",
+                1
+            )[-1].lower()
+
+            if extension not in ALLOWED:
+                c.close()
+                flash(
+                    "Only JPG, PNG and WEBP images are allowed.",
+                    "error"
+                )
+
+                return redirect(
+                    url_for(
+                        "volunteer_report",
+                        assignment_id=assignment_id
+                    )
+                )
+
+            filename = (
+                uuid.uuid4().hex
+                + "_volunteer_"
+                + secure_filename(f.filename)
+            )
+
+            f.save(
+                os.path.join(
+                    UPLOAD_DIR,
+                    filename
+                )
+            )
+
+            evidence_path = filename
+
+        c.execute("""
+            INSERT INTO volunteer_reports(
+                assignment_id,
+                volunteer_id,
+                findings,
+                recommendation,
+                evidence_path,
+                submitted_at
+            )
+            VALUES(?,?,?,?,?,?)
+        """, (
+            assignment_id,
+            u["id"],
+            findings,
+            recommendation,
+            evidence_path,
+            now()
+        ))
+
+        c.execute("""
+            UPDATE volunteer_assignments
+            SET status='completed',
+                completed_at=?
+            WHERE id=?
+        """, (
+            now(),
+            assignment_id
+        ))
+
+        add_timeline(
+            c,
+            assignment["problem_id"],
+            "volunteer_report",
+            "Field verification report submitted by JanSetu volunteer.",
+            "Student Volunteer"
+        )
+
+        c.commit()
+        c.close()
+
+        flash(
+            "Field report submitted successfully.",
+            "success"
+        )
+
+        return redirect(
+            url_for(
+                "volunteer_dashboard"
+            )
+        )
+
+    c.close()
+
+    return render_template(
+        "volunteer_report.html",
+        user=u,
+        assignment=assignment
+    )
+
 if __name__=="__main__":
     init_db()
     app.run(host="0.0.0.0",port=int(os.environ.get("PORT",5000)),debug=True)
