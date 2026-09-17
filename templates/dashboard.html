@@ -1,4 +1,98 @@
+```html
+{% extends "base.html" %}
 
-{% extends "base.html" %}{% block title %}Dashboard — JanSetu{% endblock %}
-{% block content %}<section class="page-head"><div><p class="eyebrow">MY LOCALITY</p><h1>{{user.locality}}</h1><p class="muted">{{user.name}} · <span class="verified">✓ {{user.role|replace("_"," ")|title}} account</span></p></div><a class="btn" href="/report">+ Report problem</a></section>
-<div class="grid">{% for p in problems %}<a class="card" href="/problem/{{p.id}}"><div class="row"><span class="tag">{{p.category}}</span><span class="status {{p.status}}">{{p.status|replace('_',' ')}}</span></div><h3>{{p.title}}</h3><p>{{p.case_id}} · {{p.authority}}</p><div class="metrics"><span>👥 {{p.verification_count}} verified</span><span>📷 {{p.evidence_count}} evidence</span><span>⏱ {{p.deadline}}</span></div></a>{% else %}<div class="empty">No problems yet.</div>{% endfor %}</div>{% endblock %}
+{% block title %}Dashboard — JanSetu{% endblock %}
+
+{% block content %}
+
+<section class="page-head">
+
+    <div>
+        <p class="eyebrow">
+            {% if user.role == 'citizen' %}
+                MY LOCALITY
+            {% elif user.role == 'volunteer' %}
+                VOLUNTEER DASHBOARD
+            {% elif user.role == 'department' %}
+                DEPARTMENT DASHBOARD
+            {% elif user.role == 'admin' %}
+                ADMIN DASHBOARD
+            {% endif %}
+        </p>
+
+        <h1>{{user.locality}}</h1>
+
+        <p class="muted">
+            {{user.name}}
+
+            {% if user.role == 'citizen' %}
+                · <span class="verified">✓ Verified citizen</span>
+            {% elif user.role == 'volunteer' %}
+                · Student Volunteer
+            {% elif user.role == 'department' %}
+                · Department Officer
+            {% elif user.role == 'admin' %}
+                · Administrator
+            {% endif %}
+        </p>
+    </div>
+
+    <!-- ONLY CITIZENS CAN REPORT -->
+    {% if user.role == 'citizen' %}
+        <a class="btn" href="/report">+ Report problem</a>
+    {% endif %}
+
+</section>
+
+
+<div class="grid">
+
+{% for p in problems %}
+
+<a class="card" href="/problem/{{p.id}}">
+
+    <div class="row">
+        <span class="tag">{{p.category}}</span>
+
+        <span class="status {{p.status}}">
+            {{p.status|replace('_',' ')}}
+        </span>
+    </div>
+
+    <h3>{{p.title}}</h3>
+
+    <p>
+        {{p.case_id}} · {{p.authority}}
+    </p>
+
+    <div class="metrics">
+
+        <span>
+            👥 {{p.verification_count}} verified
+        </span>
+
+        <span>
+            📷 {{p.evidence_count}} evidence
+        </span>
+
+        <span>
+            ⏱ {{p.deadline}}
+        </span>
+
+    </div>
+
+</a>
+
+{% else %}
+
+<div class="empty">
+    No problems yet.
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}
+```
+
