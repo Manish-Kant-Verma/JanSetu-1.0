@@ -1,0 +1,13 @@
+
+{% extends "base.html" %}{% block title %}JanSetu — Civic accountability{% endblock %}
+{% block content %}
+<section class="hero"><div><p class="eyebrow">VERIFY · CONNECT · TRACK · ESCALATE</p>
+<h1>Turn local problems into <span>verified civic cases.</span></h1>
+<p class="lead">JanSetu lets verified citizens report problems, build community evidence, connect cases to the responsible authority, track deadlines and reopen unresolved issues.</p>
+<div class="actions"><a class="btn" href="/register">Join your locality</a><a class="btn ghost" href="/report">Report a problem</a></div></div>
+<div class="hero-card"><div class="big">7</div><b>Core stages</b><p>Report → Verify → Submit → Track → Escalate → Resolve → Reopen</p></div></section>
+<section class="stats"><div><b>{{stats.total}}</b><span>Cases</span></div><div><b>{{stats.open}}</b><span>Active</span></div><div><b>{{stats.resolved}}</b><span>Resolved</span></div><div><b>{{stats.reopened}}</b><span>Reopened</span></div></section>
+<section><div class="section-head"><div><p class="eyebrow">RECENT CASES</p><h2>What citizens are raising</h2></div></div>
+<div class="grid">{% for p in recent %}<a class="card" href="/problem/{{p.id}}"><div class="tag">{{p.category}}</div><h3>{{p.title}}</h3><p>{{p.locality}}</p><div class="row"><span>{{p.verification_count}} verified</span><span class="status {{p.status}}">{{p.status|replace('_',' ')}}</span></div></a>{% else %}<div class="empty">No cases yet. Be the first to report a local problem.</div>{% endfor %}</div></section>
+<section class="how"><p class="eyebrow">HOW IT WORKS</p><h2>A complete accountability loop</h2><div class="steps">{% for n,t,d in [(1,'Report','Citizen submits location, description and evidence.'),(2,'Verify','Other verified citizens confirm the same problem.'),(3,'Submit','JanSetu consolidates evidence and routes the case.'),(4,'Track','Authority actions and applicable deadlines stay visible.'),(5,'Escalate','Overdue cases move up the administrative chain.'),(6,'Close / Reopen','Citizens verify resolution and can reopen recurrence.') ] %}<div><strong>0{{n}}</strong><h3>{{t}}</h3><p>{{d}}</p></div>{% endfor %}</div></section>
+{% endblock %}

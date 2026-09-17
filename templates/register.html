@@ -1,0 +1,4 @@
+
+{% extends "base.html" %}{% block title %}Register — JanSetu{% endblock %}
+{% block content %}<div class="form-wrap"><p class="eyebrow">CITIZEN REGISTRATION</p><h1>Join your locality.</h1><p class="muted">For this prototype, identity verification is simulated. Do not upload Aadhaar documents here.</p>
+<form method="post" class="form card"><label>Full name<input name="name" required></label><label>Mobile number<input name="phone" required pattern="[0-9]{10}" placeholder="10-digit mobile"></label><label>Government ID reference<input name="gov_id" required placeholder="ID reference (masked in database)"></label><label>Locality / Ward / Village<input name="locality" required></label><div class="two"><label>District<input name="district"></label><label>State<input name="state" value="Bihar"></label></div><button class="btn">Verify & create account</button></form></div>{% endblock %}

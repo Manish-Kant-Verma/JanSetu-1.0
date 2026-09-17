@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Login — JanSetu{% endblock %}
+
+{% block content %}
+<div class="form-wrap login-wrap">
+  <p class="eyebrow">JANSETU ACCESS PORTAL</p>
+  <h1>Choose your login.</h1>
+  <p class="muted">Different JanSetu roles have different responsibilities and access.</p>
+
+  <div class="role-grid">
+    <button type="button" class="role-card active" data-role="citizen"><span class="role-icon">👤</span><strong>Citizen</strong><small>Report, verify and track local problems</small></button>
+    <button type="button" class="role-card" data-role="volunteer"><span class="role-icon">🤝</span><strong>Student Volunteer</strong><small>Support field verification and civic activities</small></button>
+    <button type="button" class="role-card" data-role="department"><span class="role-icon">🏛️</span><strong>Department</strong><small>Receive, update and resolve assigned cases</small></button>
+    <button type="button" class="role-card" data-role="admin"><span class="role-icon">⚙️</span><strong>Admin</strong><small>Manage the JanSetu platform and users</small></button>
+  </div>
+
+  <form method="post" class="form card login-form">
+    <input type="hidden" name="role" id="role" value="citizen">
+    <label id="identifier-label">Mobile number<input name="identifier" id="identifier" required placeholder="10-digit mobile number" autocomplete="username"></label>
+    <label id="password-field" class="hidden">Password<input type="password" name="password" id="password" placeholder="Enter password" autocomplete="current-password"></label>
+    <button class="btn" id="login-button">Login as Citizen</button>
+  </form>
+
+  <div class="demo-box">
+    <div class="row"><strong>Demo accounts</strong><span class="tag">Prototype</span></div>
+    <p id="demo-description">Citizens use their registered mobile number. No password is required in this prototype.</p>
+    <div class="demo-credentials hidden" id="demo-credentials"><div><span>ID</span><code id="demo-id">—</code></div><div><span>Password</span><code id="demo-password">—</code></div></div>
+    <p class="muted demo-note">These credentials are for prototype testing only. Change them before real deployment.</p>
+  </div>
+
+  <p class="muted register-link">New citizen? <a href="/register">Create a verified citizen account</a>.</p>
+</div>
+
+<script>
+const roles={
+ citizen:{title:'Citizen',label:'Mobile number',placeholder:'10-digit mobile number',password:false,description:'Citizens use their registered mobile number. No password is required in this prototype.'},
+ volunteer:{title:'Student Volunteer',label:'Volunteer ID',placeholder:'e.g. volunteer',password:true,description:'Use the demo volunteer account below.',id:'volunteer',pass:'vol123'},
+ department:{title:'Department',label:'Department ID',placeholder:'e.g. department',password:true,description:'Use the demo department account below.',id:'department',pass:'dept123'},
+ admin:{title:'Admin',label:'Admin ID',placeholder:'e.g. admin',password:true,description:'Use the demo administrator account below.',id:'admin',pass:'admin123'}
+};
+const buttons=document.querySelectorAll('.role-card'),role=document.getElementById('role'),label=document.getElementById('identifier-label'),identifier=document.getElementById('identifier'),passwordField=document.getElementById('password-field'),password=document.getElementById('password'),loginButton=document.getElementById('login-button'),demoCredentials=document.getElementById('demo-credentials'),demoDescription=document.getElementById('demo-description'),demoId=document.getElementById('demo-id'),demoPassword=document.getElementById('demo-password');
+function selectRole(r){const c=roles[r];role.value=r;buttons.forEach(b=>b.classList.toggle('active',b.dataset.role===r));label.childNodes[0].textContent=c.label+' ';identifier.placeholder=c.placeholder;if(c.password){passwordField.classList.remove('hidden');password.required=true;demoCredentials.classList.remove('hidden');demoId.textContent=c.id;demoPassword.textContent=c.pass;}else{passwordField.classList.add('hidden');password.required=false;password.value='';demoCredentials.classList.add('hidden');}demoDescription.textContent=c.description;loginButton.textContent='Login as '+c.title;}
+buttons.forEach(b=>b.addEventListener('click',()=>selectRole(b.dataset.role)));
+</script>
+{% endblock %}
