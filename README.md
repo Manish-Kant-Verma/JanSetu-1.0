@@ -188,3 +188,47 @@ Responsibilities:
 - Update progress
 - Upload completion evidence
 - Resolve or reopen complaints
+
+## Technology Stack
+
+The platform can be developed using a modern web and mobile technology stack.
+
+### Frontend
+
+- Flutter for mobile application
+- React.js for web dashboards
+- HTML5
+- CSS3
+- JavaScript
+
+### Backend
+
+- FastAPI / Node.js
+- REST APIs
+- Authentication and authorization
+
+### Database
+
+- PostgreSQL
+
+### Storage
+
+- Cloud-based object storage for images, audio, and documents
+
+### Location Services
+
+- GPS / Location APIs
+- Map integration
+
+### Notifications
+
+- Push notifications
+- SMS / Email notifications where required
+
+### AI Layer
+
+- Image classification
+- Speech-to-text
+- Local-language processing
+- Duplicate complaint detection
+- Problem categorization
