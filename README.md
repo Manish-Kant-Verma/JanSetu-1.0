@@ -286,3 +286,50 @@ The system can assist authorities in identifying potentially high-priority compl
 - Number of reports
 - Public impact
 - Problem severity
+
+## System Architecture
+
+```text
+                         CITIZEN
+                            |
+                            v
+                    +---------------+
+                    |  Mobile App   |
+                    +-------+-------+
+                            |
+                     Photo / Voice
+                         / Text
+                            |
+                            v
+                    +---------------+
+                    | Backend / API |
+                    +-------+-------+
+                            |
+             +--------------+--------------+
+             |                             |
+             v                             v
+      Government Portal              College Portal
+             |                             |
+             |                       HOD / Principal
+             |                             |
+             |                    Department Selection
+             |                             |
+             |                    Student Assignment
+             |                             |
+             |                             v
+             |                       Student Team
+             |                             |
+             |                         Site Visit
+             |                             |
+             |                     Technical Report
+             |                             |
+             +<----------------------------+
+             |
+             v
+       Government Action
+             |
+             v
+       Status Update
+             |
+             v
+          Citizen
