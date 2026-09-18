@@ -3,4 +3,3 @@ dist/
 server/data/
 *.log
 .env
-node_modules
