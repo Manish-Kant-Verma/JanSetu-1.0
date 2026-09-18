@@ -3,3 +3,5 @@ dist/
 server/data/
 *.log
 .env
+.DS_Store
+test/
