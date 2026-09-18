@@ -1,4 +1,4 @@
-JanSetu
+##JanSetu
 From Citizen Report to Government Action
 
 JanSetu is an end-to-end civic problem-to-resolution platform that connects citizens, verified field members, government authorities, and contractors through a transparent digital workflow.
@@ -6,3 +6,16 @@ JanSetu is an end-to-end civic problem-to-resolution platform that connects citi
 Instead of being just a complaint-reporting application, JanSetu manages the complete lifecycle of a civic problem:
 
 Report → Verify → Route → Assess → Decide → Solve → Track → Verify → Close
+
+##Overview
+
+Citizens can report civic problems such as:
+
+Road damage and potholes
+Garbage accumulation
+Broken streetlights
+Drainage problems
+Water leakage
+Other local civic issues
+
+The platform captures evidence, GPS location, timestamps, and optional descriptions. Complaints can then be verified, routed to the appropriate government authority, assessed by a verified JS Member when required, converted into government actions or contractor projects, tracked through completion, and finally verified by both the government and citizen.
